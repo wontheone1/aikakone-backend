@@ -1,6 +1,5 @@
 (defproject aikakone-backend "0.1.0-SNAPSHOT"
-  :source-paths
-  ["src"]
+  :source-paths ["src"]
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
                  [cheshire "5.8.0"]
                  [clojure.java-time "0.3.2"]

@@ -1,15 +1,16 @@
 (ns hello-world.core
-  (:require [cheshire.core :as json]
-            [compojure.core :refer :all]
-            [environ.core :refer [env]]
-            [hello-world.util :as util]
-            [java-time :as t]
-            [org.httpkit.server :as server]
-            [ring.middleware.defaults :as defaults]
-            [ring.middleware.cors :as cors]
-            [taoensso.sente :as sente]
-            [taoensso.sente.server-adapters.http-kit :refer (get-sch-adapter)]
-            ))
+  (:require
+    [cheshire.core :as json]
+    [compojure.core :refer :all]
+    [environ.core :refer [env]]
+    [hello-world.util :as util]
+    [java-time :as t]
+    [org.httpkit.server :as server]
+    [ring.middleware.defaults :as defaults]
+    [ring.middleware.cors :as cors]
+    [taoensso.sente :as sente]
+    [taoensso.sente.server-adapters.http-kit :refer (get-sch-adapter)]
+    ))
 
 (let [{:keys [ch-recv send-fn connected-uids
               ajax-post-fn ajax-get-or-ws-handshake-fn]}
