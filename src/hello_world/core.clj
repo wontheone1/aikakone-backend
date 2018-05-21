@@ -3,6 +3,7 @@
     [cheshire.core :as json]
     [compojure.core :refer :all]
     [environ.core :refer [env]]
+    [hello-world.game :as game]
     [hello-world.util :as util]
     [java-time :as t]
     [org.httpkit.server :as server]
@@ -34,27 +35,6 @@
 (defn- convert-to-millis [seconds nanos]
   (+ (* 1000 seconds) (/ nanos 1000000)))
 
-(defn flip-row! [row]
-  (alter sprites-state update-in [:row-flipped? row] not))
-
-(defn flip-col! [col]
-  (alter sprites-state update-in [:col-flipped? col] not))
-
-(defn flip-diagonal-pieces! []
-  (alter sprites-state update :diagonal-flipped? not))
-
-(defn- randomize-puzzle []
-  (let [non-flipped-row-or-col (reduce #(assoc %1 %2 false)
-                                       {}
-                                       (range util/row-col-num))]
-    (ref-set sprites-state {:diagonal-flipped? false
-                            :row-flipped?      non-flipped-row-or-col
-                            :col-flipped?      non-flipped-row-or-col}))
-  (util/randomly-execute-a-fn flip-diagonal-pieces!)
-  (doseq [row-or-col (range util/row-col-num)]
-    (util/randomly-execute-a-fn (fn [] (flip-row! row-or-col)))
-    (util/randomly-execute-a-fn (fn [] (flip-col! row-or-col)))))
-
 (defn- start-sending-current-playtime! []
   (future (loop []
             (Thread/sleep 200)
@@ -81,7 +61,7 @@
     :aikakone/game-start
     (dosync
       (when (empty? @sprites-state)
-        (randomize-puzzle))
+        (game/randomize-puzzle sprites-state))
       (chsk-send! client-id [:aikakone/game-start @sprites-state]))
 
     :aikakone/start-timer
