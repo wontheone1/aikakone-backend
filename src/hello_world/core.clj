@@ -61,7 +61,8 @@
     :aikakone/game-start
     (dosync
       (when (empty? @sprites-state)
-        (game/randomize-puzzle sprites-state))
+        (while (not (util/is-game-challenging-enough? sprites-state))
+          (game/randomize-puzzle sprites-state)))
       (chsk-send! client-id [:aikakone/game-start @sprites-state]))
 
     :aikakone/start-timer
