@@ -90,6 +90,7 @@
 (sente/start-chsk-router! ch-chsk handle-message!)
 
 (defroutes app
+           (GET "/health" req (json/generate-string {:healthy true}))
            (GET "/rankings" req (json/generate-string @ranking))
            (GET "/chsk" req (ring-ajax-get-or-ws-handshake req))
            (POST "/chsk" req (ring-ajax-post req)))
